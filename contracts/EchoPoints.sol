@@ -10,8 +10,9 @@ pragma solidity 0.8.30;
 // =================================== EchoPoints ====================================
 // =================================== Summer 2025 ===================================
 
-import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step.sol";
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Ownable2Step, Ownable} from "openzeppelin-contracts/access/Ownable2Step.sol";
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 
 /**
  * @title Echo Points Contract
@@ -109,10 +110,10 @@ contract EchoPoints is Ownable2Step, ERC20 {
      * @param _recipient Recipient of the Echo points.
      * @param _amount Amount of Echo points to add to the recipient.
      */
-    function addEchoPoints(address _recipient, uint256 _amount)
-        external
-        onlyEchoContributor
-    {
+    function addEchoPoints(
+        address _recipient,
+        uint256 _amount
+    ) external onlyEchoContributor {
         echoPointsBalances[_recipient] += _amount;
         _totalPointSupply += _amount;
         emit Transfer(address(0), _recipient, _amount);
@@ -125,10 +126,10 @@ contract EchoPoints is Ownable2Step, ERC20 {
      * @param _pointOwner Owner of the Echo points being removed.
      * @param _amount Amount of Echo points to remove from the point owner.
      */
-    function removeEchoPoints(address _pointOwner, uint256 _amount)
-        external
-        onlyEchoContributor
-    {
+    function removeEchoPoints(
+        address _pointOwner,
+        uint256 _amount
+    ) external onlyEchoContributor {
         if (echoPointsBalances[_pointOwner] < _amount) {
             revert InsufficientEchoPoints(
                 echoPointsBalances[_pointOwner],
@@ -202,11 +203,9 @@ contract EchoPoints is Ownable2Step, ERC20 {
      * @param _pointOwners An array of point owners.
      * @return An array of Echo points balances.
      */
-    function bulkEchoPointsBalances(address[] calldata _pointOwners)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function bulkEchoPointsBalances(
+        address[] calldata _pointOwners
+    ) external view returns (uint256[] memory) {
         uint256[] memory balances = new uint256[](_pointOwners.length);
 
         for (uint256 i; i < _pointOwners.length; ) {
@@ -255,12 +254,10 @@ contract EchoPoints is Ownable2Step, ERC20 {
      * @param amount The amount of Echo points to transfer.
      * @return A boolean indicating if the transfer was successful.
      */
-    function transfer(address recipient, uint256 amount)
-        public
-        pure
-        override
-        returns (bool)
-    {
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) public pure override returns (bool) {
         (recipient, amount) = (address(0), 0);
         revert TransferNotAllowed();
     }
