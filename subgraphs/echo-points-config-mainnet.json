@@ -651,17 +651,34 @@
                 "handlers": {
                     "Transfer(indexed address,indexed address,uint256)": {
                         "calls": {
-                            "balance": {
+                            "from_balance": {
+                                "name": "balanceOf",
+                                "params": "event.params.from",
+                                "required": true
+                            },
+                            "to_balance": {
                                 "name": "balanceOf",
                                 "params": "event.params.to",
                                 "required": true
                             }
                         },
                         "entities": {
-                            "Balance": {
-                                "owner address": "event.params.to.toHexString()",
-                                "balance uint256": "calls.balance"
-                            }
+                            "Balance": [
+                                {
+                                    "id": "event.params.from.toHexString()",
+                                    "explicit_id": true,
+                                    "mapping": {
+                                        "balance uint256": "calls.from_balance"
+                                    }
+                                },
+                                {
+                                    "id": "event.params.to.toHexString()",
+                                    "explicit_id": true,
+                                    "mapping": {
+                                        "balance uint256": "calls.to_balance"
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
